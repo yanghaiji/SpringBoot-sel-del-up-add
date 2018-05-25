@@ -2,8 +2,10 @@ package com.yanghj.demo.dao;
 
 import java.util.List;
 
-import com.yanghj.demo.entity.Area;
+import org.springframework.stereotype.Component;
 
+import com.yanghj.demo.entity.Area;
+@Component
 public interface AreaDao {
 	/**
 	 * 列出区域列表
