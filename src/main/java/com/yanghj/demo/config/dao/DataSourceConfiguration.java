@@ -16,7 +16,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
  */
 @Configuration
 // 配置mybatis mapper的扫描路径
-@MapperScan("com.imooc.demo.dao")
+@MapperScan("com.yanghj.demo.dao")
 public class DataSourceConfiguration {
 	@Value("${jdbc.driver}")
 	private String jdbcDriver;
