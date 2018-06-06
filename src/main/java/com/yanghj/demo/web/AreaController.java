@@ -7,15 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.yanghj.demo.config.redis.RedisUtil;
 import com.yanghj.demo.entity.Area;
 import com.yanghj.demo.service.AreaService;
 
@@ -24,18 +23,36 @@ import com.yanghj.demo.service.AreaService;
 public class AreaController {
 	@Autowired
 	private AreaService areaService;
-
+	
+	@Autowired
+	private RedisUtil redisUitl;
+	
 	/**
+	 * 
 	 * 获取所有的区域信息
+	 * 缓存上还是有些问题，等待解决
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/listarea", method = RequestMethod.GET)
 	private Map<String, Object> listArea() {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		List<Area> list = new ArrayList<Area>();
-		// 获取区域列表
-		list = areaService.getAreaList();
+		//先判断redis内是否有数据
+		//从缓存中取数据
+		if(redisUitl.get("listArea") != null){
+			list = (List<Area>) redisUitl.get("listArea");
+		}
+		//没有则从数据库中区，并存到redis中
+		if(redisUitl.get("listArea") == null){
+			// 获取区域列表
+			list = areaService.getAreaList();
+			//加入缓存中，目前存在问题
+			if(list.size() > 0){
+				redisUitl.lSet("listArea", list);
+			}
+		}
 		modelMap.put("areaList", list);
 		return modelMap;
 	}
@@ -50,6 +67,9 @@ public class AreaController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		// 获取区域信息
 		Area area = areaService.getAreaById(areaId);
+		if(area != null){
+			redisUitl.set("area", area);
+		}
 		modelMap.put("area", area);
 		return modelMap;
 	}
