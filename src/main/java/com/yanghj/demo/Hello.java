@@ -12,3 +12,4 @@ public class Hello {
 		return "Hello SpringBoot!";
 	}
 }
+

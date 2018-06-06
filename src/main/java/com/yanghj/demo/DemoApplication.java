@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 //@SpringBootApplication
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
-@EnableScheduling   //定时器
+//@EnableScheduling   //定时器
 @EnableCaching		//开启缓存
 public class DemoApplication {
 

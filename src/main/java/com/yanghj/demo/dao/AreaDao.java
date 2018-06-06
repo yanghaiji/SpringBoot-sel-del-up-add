@@ -3,12 +3,11 @@ package com.yanghj.demo.dao;
 import java.util.List;
 
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import com.yanghj.demo.entity.Area;
 @Component
-@CacheConfig(cacheNames = "users")
+//@CacheConfig(cacheNames = "users")
 public interface AreaDao {
 	/**
 	 * 列出区域列表
@@ -22,7 +21,7 @@ public interface AreaDao {
 	 * 
 	 * @return area
 	 */
-	@Cacheable(key ="#p0")
+	//@Cacheable(key ="#p0")
 	Area queryAreaById(int areaId);
 
 	/**
